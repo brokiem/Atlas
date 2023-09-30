@@ -66,6 +66,12 @@ rd /s /q "%windir%\AtlasDesktop\3. Configuration\4. Optional Tweaks\Volume Flyou
 :: Set hidden Settings pages
 reg add "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\Explorer" /v "SettingsPageVisibility" /t REG_SZ /d "%hiddenPages%;family-group;deviceusage;" /f > nul
 
+:: Disable Windows Chat in the taskbar
+reg add "HKLM\SOFTWARE\Policies\Microsoft\Windows\Windows Chat" /v "ChatIcon" /t REG_DWORD /d "3" /f > nul
+
+:: Disable Copilot
+reg add "HKLM\Software\Policies\Microsoft\Windows\WindowsCopilot" /v "TurnOffWindowsCopilot" /t REG_DWORD /d "1" /f > nul
+
 :: Set dual boot menu description to AtlasOS 11
 bcdedit /set description "AtlasOS 11" > nul
 
@@ -131,9 +137,9 @@ reg add "HKU\%~1\Control Panel\Quick Actions\Control Center\Unpinned" /v "Micros
 reg add "HKU\%~1\Control Panel\Quick Actions\Control Center\QuickActionsStateCapture" /v "Toggles" /t REG_SZ /d "Toggles,Microsoft.QuickAction.BlueLightReduction:false,Microsoft.QuickAction.Accessibility:false,Microsoft.QuickAction.ProjectL2:false" /f > nul
 
 :: Remove 'Bitmap File' from 'New' context menu
+set "mrtCache=HKEY_USERS\%~1\Software\Classes\Local Settings\MrtCache"
 echo %~1 | find "_Classes" > nul
 if errorlevel 0 (
-    set "mrtCache=HKEY_USERS\%~1\Local Settings\MrtCache"
     for /f "tokens=*" %%a in ('reg query "%mrtCache%" /s ^| find /i "%mrtCache%"') do (
         for /f "tokens=1-2" %%b in ('reg query "%%a" /v * ^| find /i "ShellNewDisplayName_Bmp"') do (
             reg add "%%a" /v "%%b %%c" /t REG_SZ /d "" /f

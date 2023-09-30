@@ -23,3 +23,6 @@ foreach ($userDir in $userDirectories) {
     }
     Copy-Item -Path $settingsFilePath -Destination $destinationPath -Force
 }
+
+# Kill the window informing about process hacker
+Stop-Process -name pcaui -Force -ErrorAction SilentlyContinue
