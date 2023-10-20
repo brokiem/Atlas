@@ -1,8 +1,7 @@
 @echo off
-setlocal EnableDelayedExpansion
 
 :: Check if user is on Windows 11
-for /f "tokens=6 delims=[.] " %%a in ('ver') do (if %%a LSS 22000 set win10=true)
+for /f "tokens=6 delims=[.] " %%a in ('ver') do (if %%a LSS 22000 set "win10=true")
 
 :: Set hidden Windows Settings pages
 :: There's some specific Windows 11/10 additions or removals
@@ -29,22 +28,22 @@ cortana-windowssearch
 
 :: Set 10-only changes
 if defined win10 (
-    set regVariable=USERREG10
+    set "regVariable=USERREG10"
 
     rem Set dual boot menu description to AtlasOS 10
     bcdedit /set description "AtlasOS 10" > nul
 
     rem Delete 11-only tweaks
-    rd /s /q "%windir%\AtlasDesktop\3. Configuration\Background Apps" > nul
-    rd /s /q "%windir%\AtlasDesktop\3. Configuration\Power\Timer Resolution" > nul
-    rd /s /q "%windir%\AtlasDesktop\4. Optional Tweaks\File Explorer Customization\Compact View" > nul
-    rd /s /q "%windir%\AtlasDesktop\4. Optional Tweaks\Windows 11 Context Menu" > nul
-    del /f /q "%windir%\AtlasModules\Tools\TimerResolution.exe" > nul
+    rd /s /q "%windir%\AtlasDesktop\3. Configuration\Background Apps" > nul 2>&1
+    rd /s /q "%windir%\AtlasDesktop\3. Configuration\Power\Timer Resolution" > nul 2>&1
+    rd /s /q "%windir%\AtlasDesktop\4. Optional Tweaks\File Explorer Customization\Compact View" > nul 2>&1
+    rd /s /q "%windir%\AtlasDesktop\4. Optional Tweaks\Windows 11 Context Menu" > nul 2>&1
+    del /f /q "%windir%\AtlasModules\Tools\TimerResolution.exe" > nul 2>&1
 
     rem Set hidden Settings pages
     reg add "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\Explorer" /v "SettingsPageVisibility" /t REG_SZ /d "%hiddenPages%;backup;" /f > nul
 ) else (
-    set regVariable=USERREG
+    set "regVariable=USERREG"
 )
 
 :: If the "Volatile Environment" key exists, that means it is a proper user. Built in accounts/SIDs do not have this key.
@@ -61,10 +60,10 @@ if defined win10 exit /b
 :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
 :: Remove volume flyout
-rd /s /q "%windir%\AtlasDesktop\3. Configuration\4. Optional Tweaks\Volume Flyout" > nul
+rd /s /q "%windir%\AtlasDesktop\3. Configuration\4. Optional Tweaks\Volume Flyout" > nul 2>&1
 
 :: Set hidden Settings pages
-reg add "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\Explorer" /v "SettingsPageVisibility" /t REG_SZ /d "%hiddenPages%;family-group;deviceusage;" /f > nul
+reg add "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\Explorer" /v "SettingsPageVisibility" /t REG_SZ /d "%hiddenPages%;family-group;deviceusage;home;" /f > nul
 
 :: Disable Windows Chat in the taskbar
 reg add "HKLM\SOFTWARE\Policies\Microsoft\Windows\Windows Chat" /v "ChatIcon" /t REG_DWORD /d "3" /f > nul
@@ -139,10 +138,10 @@ reg add "HKU\%~1\Control Panel\Quick Actions\Control Center\QuickActionsStateCap
 :: Remove 'Bitmap File' from 'New' context menu
 set "mrtCache=HKEY_USERS\%~1\Software\Classes\Local Settings\MrtCache"
 echo %~1 | find "_Classes" > nul
-if errorlevel 0 (
-    for /f "tokens=*" %%a in ('reg query "%mrtCache%" /s ^| find /i "%mrtCache%"') do (
+if errorlevel 1 (
+    for /f "tokens=*" %%a in ('reg query "%mrtCache%" /s 2^>nul ^| find /i "%mrtCache%" 2^>nul') do (
         for /f "tokens=1-2" %%b in ('reg query "%%a" /v * ^| find /i "ShellNewDisplayName_Bmp"') do (
-            reg add "%%a" /v "%%b %%c" /t REG_SZ /d "" /f
+            reg add "%%a" /v "%%b %%c" /t REG_SZ /d "" /f > nul
         )
     )
 )

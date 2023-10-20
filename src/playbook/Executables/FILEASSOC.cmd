@@ -34,11 +34,11 @@ set chromeAssociations="Proto:https:ChromeHTML"^
  ".pdf:ChromeHTML"^
  ".shtml:ChromeHTML"
 
-if "%~1"=="" set associations=%baseAssociations%
-if "%~1"=="Microsoft Edge" set associations=%baseAssociations%
-if "%~1"=="Brave" set associations=%baseAssociations% %braveAssociations%
-if "%~1"=="LibreWolf" set associations=%baseAssociations% %libreWolfAssociations%
-if "%~1"=="Google Chrome" set associations=%baseAssociations% %chromeAssociations%
+if "%~1" == "" set "associations=%baseAssociations%"
+if "%~1" == "Microsoft Edge" set "associations=%baseAssociations%"
+if "%~1" == "Brave" set "associations=%baseAssociations% %braveAssociations%"
+if "%~1" == "LibreWolf" set "associations=%baseAssociations% %libreWolfAssociations%"
+if "%~1" == "Google Chrome" set "associations=%baseAssociations% %chromeAssociations%"
 
 :: Set 7-Zip assocations
 call :7ZIPSYSTEM
@@ -51,10 +51,11 @@ for /f "usebackq tokens=2 delims=\" %%a in (`reg query HKU ^| findstr /r /x /c:"
         powershell -NoP -EP Unrestricted -File assoc.ps1 "Placeholder" "%%a" %associations%
     )
 )
+exit /b
 
 :7ZIPUSER
 (
-    reg add "HKU\%~1\Software\7-Zip\Options" /v "ContextMenu" /t REG_DWORD /d "1073746726" /f
+    reg add "HKU\%~1\Software\7-Zip\Options" /v "ContextMenu" /t REG_DWORD /d "1073742374" /f
     reg add "HKU\%~1\Software\Classes\.001" /ve /t REG_SZ /d "7-Zip.001" /f
     reg add "HKU\%~1\Software\Classes\.7z" /ve /t REG_SZ /d "7-Zip.7z" /f
     reg add "HKU\%~1\Software\Classes\.apfs" /ve /t REG_SZ /d "7-Zip.apfs" /f
@@ -284,6 +285,7 @@ for /f "usebackq tokens=2 delims=\" %%a in (`reg query HKU ^| findstr /r /x /c:"
     reg add "HKU\%~1\Software\Classes\7-Zip.zip\shell\open" /ve /t REG_SZ /d "" /f
     reg add "HKU\%~1\Software\Classes\7-Zip.zip\shell\open\command" /ve /t REG_SZ /d "\"%ProgramFiles%\7-Zip\7zFM.exe\" \"%%1\"" /f
 ) > nul
+
 exit /b
 
 :7ZIPSYSTEM
@@ -517,4 +519,5 @@ exit /b
     reg add "HKLM\Software\Classes\7-Zip.zip\shell\open" /ve /t REG_SZ /d "" /f
     reg add "HKLM\Software\Classes\7-Zip.zip\shell\open\command" /ve /t REG_SZ /d "\"%ProgramFiles%\7-Zip\7zFM.exe\" \"%%1\"" /f
 ) > nul
+
 exit /b

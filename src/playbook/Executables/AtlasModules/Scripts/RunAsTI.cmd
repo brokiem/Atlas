@@ -1,6 +1,5 @@
 <# : batch portion
 @echo off
-setlocal EnableDelayedExpansion
 
 goto RunAsTI-Elevate
 
@@ -28,14 +27,14 @@ whoami /user | find /i "S-1-5-18" > nul 2>&1 || (
 :RunAsTI-Elevate
 if "%~1" == "" (
 	set /P program_path="Enter the valid path of the program or drag it here: "
-	if "!program_path!" == "" (
+	if "%program_path%" == "" (
 		echo error: no input
 		timeout /t 1 > nul
 		cls
 		goto RunAsTI-Elevate
 	)
 
-	call :RunAsTI !program_path!
+	call :RunAsTI %program_path%
 	exit /b 1
 )
 
@@ -64,11 +63,11 @@ goto RunAsTI-Elevate
 set "0=%~f0"
 set "1=%*"
 powershell -nop -c iex(gc """$env:0""" -Raw)
-set RunAsTI_Errorlevel=%errorlevel%
-if %RunAsTI_Errorlevel%==1 (
+set "RunAsTI_Errorlevel=%errorlevel%"
+if "%RunAsTI_Errorlevel%" == "1" (
 	goto RunAsTI-Fail
 ) else (
-	if %RunAsTI_Errorlevel%==2 (
+	if "%RunAsTI_Errorlevel%" == "2" (
 		goto RunAsTI-Declined
 	) else (
 		exit /b

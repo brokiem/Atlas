@@ -1,5 +1,4 @@
 @echo off
-setlocal EnableDelayedExpansion
 
 whoami /user | find /i "S-1-5-18" > nul 2>&1 || (
 	call RunAsTI.cmd "%~f0" %*
@@ -48,7 +47,7 @@ call setSvc.cmd PrintWorkFlowUserSvc 3
 :: Hide Settings pages
 set "pageKey=HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\Explorer"
 reg query "%pageKey%" /v "SettingsPageVisibility" > nul 2>&1
-if "%errorlevel%"=="0" call :enableSettingsPage
+if "%errorlevel%" == "0" call :enableSettingsPage
 
 DISM /Online /Enable-Feature /FeatureName:"Printing-Foundation-Features" /NoRestart > nul
 DISM /Online /Enable-Feature /FeatureName:"Printing-Foundation-InternetPrinting-Client" /NoRestart > nul
