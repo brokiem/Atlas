@@ -2,15 +2,6 @@
 title: Revert Tweaks from Old Versions
 description: Reverts removed tweaks, so that people who upgrade from older Atlas versions no longer have the tweaks
 actions:
-    # Hide UWP Badges on Taskbar
-    # Tweak was improperly titled, disables badges on all apps
-    # Why would you disable badges on UWP apps anyways?
-  - !registryValue:
-    path: 'HKCU\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Advanced'
-    value: 'TaskbarBadges'
-    data: '1'
-    type: REG_DWORD
-
     # Reverted for security reasons
     # Users get no update notifications otherwise, which means many users don't update at all
   - !cmd:

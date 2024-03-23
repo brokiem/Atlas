@@ -5,5 +5,5 @@ actions:
   - !registryValue:
     path: 'HKCU\Control Panel\Desktop'
     value: 'MenuShowDelay'
-    data: '0'
+    data: '5'
     type: REG_SZ

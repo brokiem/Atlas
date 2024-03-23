@@ -2,14 +2,6 @@
 title: Configure Power Settings
 description: Executes script to configure power settings for the best performance, especially focusing on the lowest latency e.g. by reducing any potential jitter
 actions:
-    # Disable Power Saving features
-  - !cmd:
-    command: '"AtlasDesktop\3. General Configuration\Power\Power Saving\Disable Power-saving.cmd" -Silent'
-    exeDir: true
-    wait: true
-    weight: 20
-    option: 'disable-power-saving'
-
     # Disable Hibernation & Fast Startup
     # Disabling makes NTFS accessible outside of Windows
   - !cmd:

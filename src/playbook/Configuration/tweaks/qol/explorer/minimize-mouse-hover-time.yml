@@ -5,5 +5,5 @@ actions:
   - !registryValue:
     path: 'HKCU\Control Panel\Desktop'
     value: 'MouseHoverTime'
-    data: '20'
+    data: '50'
     type: REG_SZ
