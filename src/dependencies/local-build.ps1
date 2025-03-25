@@ -180,13 +180,9 @@ while ($true) { Get-Content -Wait -LiteralPath $a -EA 0 | Write-Output; Start-Sl
 			$oemToReplace = 'AtlasVersionUndefined'
 			$oemYml = Get-Content -Path $oemYmlPath -Raw
 			$tempOemYml = $oemYml -replace $oemToReplace, $version
-			
-			if ($tempOemYml -eq $oemYml) {
-				Write-Error "Couldn't find OEM string '$oemToReplace'."
-			} else {
-				New-Item (Split-Path $tempOemYmlPath) -ItemType Directory -Force | Out-Null
-				Set-Content -Path $tempOemYmlPath -Value $tempOemYml
-			}
+
+			New-Item (Split-Path $tempOemYmlPath) -ItemType Directory -Force | Out-Null
+			Set-Content -Path $tempOemYmlPath -Value $tempOemYml
 		} else {
 			Write-Error "Invalid version format in 'playbook.conf', not setting OEM version."
 		}
