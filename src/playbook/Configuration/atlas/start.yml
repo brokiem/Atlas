@@ -55,38 +55,4 @@ actions:
     weight: 150
     runas: currentUserElevated
 
-    # Browsers
-  - !writeStatus: {status: 'Installing Brave', option: 'browser-brave'}
-  - !powerShell:
-    command: '.\SOFTWARE.ps1 -Brave'
-    exeDir: true
-    wait: true
-    weight: 120
-    option: 'browser-brave'
-    runas: currentUserElevated
-  - !writeStatus: {status: 'Installing Firefox', option: 'browser-firefox'}
-  - !powerShell:
-    command: '.\SOFTWARE.ps1 -Firefox'
-    exeDir: true
-    wait: true
-    weight: 120
-    option: 'browser-firefox'
-    runas: currentUserElevated
-  - !writeStatus: {status: 'Installing LibreWolf', option: 'browser-librewolf'}
-  - !powerShell:
-    command: '.\LIBREWOLF.ps1'
-    exeDir: true
-    wait: true
-    weight: 120
-    option: 'browser-librewolf'
-    runas: currentUserElevated
-  - !writeStatus: {status: 'Installing Google Chrome', option: 'browser-chrome'}
-  - !powerShell:
-    command: '.\SOFTWARE.ps1 -Chrome'
-    exeDir: true
-    wait: true
-    weight: 120
-    option: 'browser-chrome'
-    runas: currentUserElevated
-
   ################ END NO LOCAL BUILD ################
